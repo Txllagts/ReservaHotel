@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Lista de Servicios</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 40px;
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+                  url('https://images.unsplash.com/photo-1501117716987-c8e1ecb2e180?ixlib=rb-4.0.3') center/cover no-repeat fixed;
+      min-height: 100vh;
+      color: #fff;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    h2 {
+      text-align: center;
+      color: #f1c40f;
+      font-weight: 300;
+      margin-bottom: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: rgba(255, 255, 255, 0.05);
+      color: #fff;
+    }
+
+    th, td {
+      padding: 12px 15px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      text-align: center;
+    }
+
+    th {
+      background-color: rgba(255, 255, 255, 0.1);
+      color: #f1c40f;
+      font-weight: 500;
+    }
+
+    tr:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    a.button {
+      padding: 8px 14px;
+      background: linear-gradient(45deg, #d4af37, #f1c40f);
+      color: #222;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: 600;
+      transition: all 0.3s;
+      display: inline-block;
+      margin: 0 4px;
+    }
+
+    a.button:hover {
+      background: linear-gradient(45deg, #f1c40f, #d4af37);
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Lista de Servicios</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Tipo</th>
+          <th>Descripción</th>
+          <th>Fecha</th>
+          <th>Estado</th>
+          <th>Habitación</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="servicio : ${servicios}">
+          <td th:text="${servicio.id}">1</td>
+          <td th:text="${servicio.tiposervicio}">Limpieza</td>
+          <td th:text="${servicio.descripcion}">...</td>
+          <td th:text="${servicio.fechaprogramada}">2025-06-05</td>
+          <td th:text="${servicio.estado}">Pendiente</td>
+          <td th:text="${servicio.habitacion.numero}">101</td>
+          <td>
+            <a th:href="@{'/editarservicio/' + ${servicio.id}}" class="button">Editar</a>
+            <a th:href="@{'/eliminarservicio/' + ${servicio.id}}" class="button" onclick="return confirm('¿Estás seguro de eliminar este servicio?')">Eliminar</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</body>
+</html>
+

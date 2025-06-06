@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Editar Reserva</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f7f8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    form {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+      width: 100%;
+      max-width: 500px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 12px;
+      background-color: #3f87a6;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #336e89;
+    }
+  </style>
+</head>
+<body>
+  <form th:action="@{/reservas/actualizar}" th:object="${reserva}" method="post">
+    <h2>Editar Reserva</h2>
+
+    <input type="hidden" th:field="*{id}"/>
+
+    <label for="fechainicio">Fecha de Inicio</label>
+    <input type="date" id="fechainicio" th:field="*{fechainicio}" required>
+
+    <label for="fechafin">Fecha de Fin</label>
+    <input type="date" id="fechafin" th:field="*{fechafin}" required>
+
+    <label for="fechareserva">Fecha de Reserva</label>
+    <input type="date" id="fechareserva" th:field="*{fechareserva}" required>
+
+    <label for="estado">Estado</label>
+    <select id="estado" th:field="*{estado}" required>
+      <option value="Pendiente">Pendiente</option>
+      <option value="Confirmada">Confirmada</option>
+      <option value="Cancelada">Cancelada</option>
+      <option value="Completada">Completada</option>
+    </select>
+
+    <label for="habitacion">Habitación</label>
+	<select id="habitacion" name="habitacion.id" required>
+	  <option value="">Seleccione una habitación</option>
+	  <option th:each="hab : ${habitaciones}"
+	          th:value="${hab.id}"
+	          th:text="'Habitación ' + ${hab.numero}"
+	          th:selected="${reserva.habitacion?.id == hab.id}">
+	  </option>
+	</select>
+	
+    <label for="usuarios">Usuario</label>
+	<select id="usuarios" name="usuarios.id" required>
+	  <option value="">Seleccione un usuario</option>
+	  <option th:each="usuario : ${usuarios}"
+	          th:value="${usuario.id}"
+	          th:text="${usuario.nombre + ' ' + usuario.apellido}"
+	          th:selected="${reserva.usuarios?.id == usuario.id}">
+	  </option>
+	</select>
+
+
+    <button type="submit">Guardar Cambios</button>
+  </form>
+</body>
+</html>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Crear Reserva</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+                  url('https://images.unsplash.com/photo-1501117716987-c8e1ecb2e180?ixlib=rb-4.0.3') center/cover no-repeat fixed;
+      display: flex;
+      flex-direction: column;
+      color: white;
+    }
+
+    header {
+      background-color: rgba(0, 0, 0, 0.5);
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      backdrop-filter: blur(6px);
+    }
+
+    header h1 {
+      margin: 0;
+      font-weight: 400;
+      color: #f1c40f;
+    }
+
+    header nav a {
+      margin-left: 20px;
+      color: #f1c40f;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    header nav a:hover {
+      color: #d4af37;
+      text-decoration: underline;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 20px;
+    }
+
+    form {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(12px);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+      width: 100%;
+      max-width: 500px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-weight: 300;
+      color: #f1c40f;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 12px;
+      margin-top: 8px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.15);
+      color: white;
+      font-size: 15px;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+
+    input::placeholder {
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    input:focus, select:focus {
+      border-color: rgba(255, 255, 255, 0.8);
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+    }
+
+    button {
+      margin-top: 25px;
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(45deg, #d4af37, #f1c40f);
+      color: #222;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    button:hover {
+      background: linear-gradient(45deg, #f1c40f, #d4af37);
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body>
+
+  <header th:if="${session.usuario != null and session.usuario.rol == 'recepcionista'}">
+    <h1>Gestión de Recepcionista</h1>
+    <nav>
+      <a th:href="@{/formreserva}">Formulario Reservas</a>
+      <a th:href="@{/verreservas}">Ver Reservas</a>
+    </nav>
+  </header>
+
+  <header th:if="${session.usuario != null and session.usuario.rol == 'cliente'}">
+    <h1>¡Hola Cliente!</h1>
+    <nav>
+      <a th:href="@{/formreserva}">Formulario Reservas</a>
+      <a th:href="@{/verreservas}">Ver Reservas</a>
+    </nav>
+  </header>
+
+  <main>
+    <form th:action="@{/guardarreserva}" method="post" th:object="${reserva}">
+      <h2>Crear Reserva</h2>
+
+      <label for="fechainicio">Fecha de Inicio</label>
+      <input type="date" id="fechainicio" th:field="*{fechainicio}" required>
+
+      <label for="fechafin">Fecha de Fin</label>
+      <input type="date" id="fechafin" th:field="*{fechafin}" required>
+
+      <div th:if="${session.usuario != null and session.usuario.rol == 'recepcionista'}">
+        <label for="estado">Estado</label>
+        <select id="estado" th:field="*{estado}" required>
+          <option value="pendiente">Pendiente</option>
+          <option value="confirmada">Confirmada</option>
+          <option value="cancelada">Cancelada</option>
+        </select>
+      </div>
+
+      <label for="habitacion">Habitación</label>
+      <select id="habitacion" th:field="*{habitacion}" required>
+        <option th:each="h : ${habitaciones}" 
+                th:value="${h.id}" 
+                th:text="${'Hab #' + h.numero + ' - ' + h.tipo}"></option>
+      </select>
+
+      <label for="usuarios">Usuario</label>
+      <select id="usuarios" th:field="*{usuarios}" required>
+        <option th:each="u : ${usuarios}" 
+                th:if="${u.rol == 'cliente'}"
+                th:value="${u.id}" 
+                th:text="${u.nombre + ' ' + u.apellido}">
+        </option>
+      </select>
+
+      <button type="submit">Guardar Reserva</button>
+    </form>
+  </main>
+
+</body>
+</html>
+
