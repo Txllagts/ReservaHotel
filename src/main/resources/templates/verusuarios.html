@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Lista de Usuarios</title>
+  <style>
+    body {
+      font-family: 'Montserrat', sans-serif;
+      margin: 0;
+      padding: 40px;
+      background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+                  url('https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3') center/cover no-repeat fixed;
+      color: #fff;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+      max-width: 1100px;
+      margin: auto;
+    }
+
+    h2 {
+      text-align: center;
+      color: #f1c40f;
+      font-weight: 300;
+      margin-bottom: 30px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: rgba(255, 255, 255, 0.05);
+      color: #fff;
+    }
+
+    th, td {
+      padding: 12px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      text-align: center;
+    }
+
+    th {
+      background-color: rgba(255, 255, 255, 0.1);
+      color: #f1c40f;
+      font-weight: 500;
+    }
+
+    tr:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .acciones {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .btn {
+      padding: 8px 14px;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-editar {
+      background: linear-gradient(45deg, #f39c12, #f1c40f);
+      color: #222;
+    }
+
+    .btn-editar:hover {
+      background: linear-gradient(45deg, #f1c40f, #f39c12);
+      transform: translateY(-2px);
+    }
+
+    .btn-eliminar {
+      background-color: #d9534f;
+      color: white;
+    }
+
+    .btn-eliminar:hover {
+      background-color: #c9302c;
+    }
+
+    .btn-nuevo {
+      margin-top: 30px;
+      display: block;
+      width: fit-content;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 12px 24px;
+      background: linear-gradient(45deg, #d4af37, #f1c40f);
+      color: #222;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn-nuevo:hover {
+      background: linear-gradient(45deg, #f1c40f, #d4af37);
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Lista de Usuarios</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Apellido</th>
+          <th>Email</th>
+          <th>Rol</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="usuario : ${listaUsuarios}">
+          <td th:text="${usuario.id}">1</td>
+          <td th:text="${usuario.nombre}"></td>
+          <td th:text="${usuario.apellido}"></td>
+          <td th:text="${usuario.email}"></td>
+          <td th:text="${usuario.rol}"></td>
+          <td class="acciones">
+            <a th:href="@{'/editarusuario/' + ${usuario.id}}" class="btn btn-editar">Editar</a>
+            <a th:href="@{'/eliminarusuario/' + ${usuario.id}}"
+               class="btn btn-eliminar"
+               onclick="return confirm('¿Estás seguro de eliminar este usuario?');">Eliminar</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <button type="button" class="btn-nuevo" onclick="window.location.href='/formusuarioadmin'">Ingresar nuevo usuario</button>
+  </div>
+</body>
+</html>
+

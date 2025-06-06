@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Modificar Servicio</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+                  url('https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3') center/cover no-repeat fixed;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+    }
+
+    form {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(12px);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+      width: 100%;
+      max-width: 500px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-weight: 300;
+      color: #f1c40f;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 12px;
+      margin-top: 8px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.15);
+      color: white;
+      font-size: 15px;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    input::placeholder, textarea::placeholder {
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: rgba(255, 255, 255, 0.8);
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+    }
+
+    button {
+      margin-top: 25px;
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(45deg, #d4af37, #f1c40f);
+      color: #222;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    button:hover {
+      background: linear-gradient(45deg, #f1c40f, #d4af37);
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body>
+  <form th:action="@{/actualizarservicio}" method="post" th:object="${servicio}">
+    <h2>Modificar Servicio</h2>
+
+    <input type="hidden" th:field="*{id}" />
+
+    <label for="tiposervicio">Tipo de Servicio</label>
+    <input type="text" id="tiposervicio" th:field="*{tiposervicio}" required>
+
+    <label for="descripcion">Descripción</label>
+    <textarea id="descripcion" th:field="*{descripcion}" rows="4" required></textarea>
+
+    <label for="fechaprogramada">Fecha Programada</label>
+    <input type="date" id="fechaprogramada" th:field="*{fechaprogramada}" required>
+
+    <label for="estado">Estado</label>
+    <select id="estado" th:field="*{estado}">
+      <option value="pendiente">Pendiente</option>
+      <option value="en curso">En curso</option>
+      <option value="completado">Completado</option>
+    </select>
+
+    <label for="habitacion">Habitación</label>
+    <select id="habitacion" th:field="*{habitacion.id}" required>
+      <option th:each="hab : ${habitaciones}"
+              th:value="${hab.id}"
+              th:text="'Habitación #' + ${hab.numero}"></option>
+    </select>
+
+    <button type="submit">Actualizar Servicio</button>
+  </form>
+</body>
+</html>
+
